@@ -1,0 +1,1378 @@
+<html lang="uk" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Studio 9 — Інтерактивна студія візуального оформлення об'єктів</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Inter, Plus Jakarta Sans, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              400: '#818cf8',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              900: '#1e1b4b',
+              accent: '#06b6d4',
+              neon: '#10b981'
+            }
+          },
+          boxShadow: {
+            'glow-indigo': '0 0 25px -5px rgba(99, 102, 241, 0.4)',
+            'glow-cyan': '0 0 25px -5px rgba(6, 182, 212, 0.4)',
+            'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.08)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Плавні переходи та мікро-анімації */
+    * {
+      box-sizing: border-box;
+    }
+
+    /* Фоновий градієнт та шум */
+    body {
+      background: radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.08) 0%, transparent 40%),
+                  radial-gradient(circle at 85% 85%, rgba(6, 182, 212, 0.06) 0%, transparent 45%),
+                  #0b0f19;
+      color: #f1f5f9;
+      min-height: 100vh;
+    }
+
+    /* Скляні картки (Glassmorphism) */
+    .glass-panel {
+      background: rgba(17, 24, 39, 0.72);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    .glass-panel-light {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.06);
+    }
+
+    /* ========================================================
+       РЕЖИМ 1: СУВОРІ СТИЛІ ПРАКТИЧНОЇ РОБОТИ №9 (МЕТОДИЧКА)
+       ======================================================== */
+    .retro-theme {
+      background-color: #d3d3d3 !important; /* світлосірий фон */
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 24 24' fill='none' stroke='%23334155' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='12 2 2 7 12 12 22 7 12 2'%3E%3C/polygon%3E%3Cpolyline points='2 17 12 22 22 17'%3E%3C/polyline%3E%3Cpolyline points='2 12 12 17 22 12'%3E%3C/polyline%3E%3C/svg%3E") !important;
+      background-repeat: no-repeat !important; /* без повторень */
+      background-position: right bottom !important; /* правий нижній кут */
+      background-attachment: local !important;
+      color: #00008b !important; /* темносиній */
+      font-family: "Courier New", Courier, monospace !important;
+      padding: 2.2rem !important;
+    }
+
+    /* Текст: Courier, 10pt, темносиній, вирівнювання вліво, абзацний відступ 1 см */
+    .retro-theme p,
+    .retro-theme .retro-text {
+      font-family: "Courier New", Courier, monospace !important;
+      font-size: 10pt !important;
+      color: #00008b !important;
+      text-align: left !important;
+      text-indent: 1cm !important;
+      line-height: 1.5 !important;
+      margin-bottom: 0.85rem !important;
+    }
+
+    /* Заголовки 1-го рівня: Verdana, 14pt, чорний, вліво, відступ 1 см, напівжирний */
+    .retro-theme h1,
+    .retro-theme .retro-h1 {
+      font-family: Verdana, Geneva, Tahoma, sans-serif !important;
+      font-size: 14pt !important;
+      color: #000000 !important;
+      text-align: left !important;
+      text-indent: 1cm !important;
+      font-weight: bold !important;
+      margin-top: 1.2rem !important;
+      margin-bottom: 0.75rem !important;
+    }
+
+    /* Заголовки 2-го рівня: Verdana, 12pt, світлосиній, вліво, відступ 1 см, напівжирний нахилений */
+    .retro-theme h2,
+    .retro-theme .retro-h2 {
+      font-family: Verdana, Geneva, Tahoma, sans-serif !important;
+      font-size: 12pt !important;
+      color: #1e90ff !important; /* світлосиній (DodgerBlue) */
+      text-align: left !important;
+      text-indent: 1cm !important;
+      font-weight: bold !important;
+      font-style: italic !important;
+      margin-top: 1.1rem !important;
+      margin-bottom: 0.65rem !important;
+    }
+
+    /* Посилання: без підкреслення, напівжирний, прозорий фон.
+       Hover: зміна кольору, гарнітури та розміру шрифту */
+    .retro-theme a.retro-link {
+      text-decoration: none !important;
+      font-weight: bold !important;
+      background-color: transparent !important;
+      color: #00008b !important;
+      display: inline-block;
+      transition: all 0.2s ease;
+    }
+
+    .retro-theme a.retro-link:hover {
+      color: #dc2626 !important; /* зміна кольору на червоний */
+      font-family: "Georgia", Times, serif !important; /* зміна гарнітури */
+      font-size: 12pt !important; /* зміна розміру шрифту */
+      text-decoration: underline !important;
+    }
+
+    /* Таблиці: фон прозорий, рамка штрихова 3 пт, шрифт Courier 90% */
+    .retro-theme table.retro-table {
+      background-color: transparent !important;
+      border: 3pt dashed #00008b !important;
+      border-collapse: collapse !important;
+      width: 100% !important;
+      font-family: "Courier New", Courier, monospace !important;
+      font-size: 90% !important;
+      margin: 1.2rem 0 !important;
+    }
+
+    .retro-theme table.retro-table th,
+    .retro-theme table.retro-table td {
+      border: 1pt dashed #00008b !important;
+      padding: 6px 12px !important;
+    }
+
+    .retro-theme table.retro-table tr:first-child,
+    .retro-theme table.retro-table thead tr th {
+      text-align: center !important;
+      font-weight: bold !important;
+      background: rgba(0, 0, 139, 0.06) !important;
+    }
+
+    .retro-theme table.retro-table tbody tr td {
+      text-align: center !important;
+      font-weight: normal !important;
+    }
+
+    /* ========================================================
+       РЕЖИМ 2: МОДЕРНІЗОВАНИЙ СТИЛЬ (MODERN STUDIO EDITION)
+       ======================================================== */
+    .modern-theme {
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%) !important;
+      color: #e2e8f0 !important;
+      font-family: 'Plus Jakarta Sans', sans-serif !important;
+      padding: 2.2rem !important;
+    }
+
+    .modern-theme .modern-card {
+      background: rgba(30, 41, 59, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
+    }
+
+    .modern-theme h1,
+    .modern-theme .retro-h1 {
+      font-family: 'Plus Jakarta Sans', sans-serif !important;
+      font-size: 2.1rem !important;
+      font-weight: 800 !important;
+      letter-spacing: -0.03em !important;
+      background: linear-gradient(135deg, #ffffff 30%, #818cf8 100%) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      text-indent: 0 !important;
+      margin-bottom: 1rem !important;
+    }
+
+    .modern-theme h2,
+    .modern-theme .retro-h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif !important;
+      font-size: 1.35rem !important;
+      font-weight: 700 !important;
+      color: #38bdf8 !important;
+      font-style: normal !important;
+      text-indent: 0 !important;
+      margin-top: 1.8rem !important;
+      margin-bottom: 0.8rem !important;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .modern-theme p,
+    .modern-theme .retro-text {
+      font-family: 'Inter', sans-serif !important;
+      font-size: 0.975rem !important;
+      line-height: 1.75 !important;
+      color: #94a3b8 !important;
+      text-indent: 0 !important;
+      margin-bottom: 1.1rem !important;
+    }
+
+    .modern-theme a.retro-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 1rem;
+      background: rgba(99, 102, 241, 0.15) !important;
+      border: 1px solid rgba(99, 102, 241, 0.35) !important;
+      color: #a5b4fc !important;
+      font-weight: 600 !important;
+      font-size: 0.875rem !important;
+      font-family: 'Plus Jakarta Sans', sans-serif !important;
+      border-radius: 9999px;
+      text-decoration: none !important;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+    }
+
+    .modern-theme a.retro-link:hover {
+      background: #6366f1 !important;
+      color: #ffffff !important;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(99, 102, 241, 0.45) !important;
+    }
+
+    .modern-theme table.retro-table {
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      border-radius: 0.85rem !important;
+      overflow: hidden;
+      border-collapse: separate !important;
+      border-spacing: 0;
+      background: rgba(15, 23, 42, 0.75) !important;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+      font-family: 'Inter', sans-serif !important;
+      font-size: 0.875rem !important;
+      width: 100% !important;
+    }
+
+    .modern-theme table.retro-table th {
+      background: rgba(30, 41, 59, 0.9) !important;
+      color: #f8fafc !important;
+      font-weight: 700 !important;
+      padding: 14px 18px !important;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.08) !important;
+      border-left: none !important;
+      border-right: none !important;
+      border-top: none !important;
+      text-align: left !important;
+    }
+
+    .modern-theme table.retro-table td {
+      padding: 14px 18px !important;
+      color: #cbd5e1 !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+      border-left: none !important;
+      border-right: none !important;
+      border-top: none !important;
+      text-align: left !important;
+    }
+
+    .modern-theme table.retro-table tbody tr:hover {
+      background: rgba(99, 102, 241, 0.08) !important;
+    }
+
+    /* Анімація копіювання */
+    @keyframes pulseSuccess {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    .btn-copied {
+      animation: pulseSuccess 0.3s ease-in-out;
+    }
+  </style>
+</head>
+
+<body class="flex flex-col min-h-screen text-slate-100 selection:bg-brand-500 selection:text-white">
+
+  <!-- Головна навігаційна панель -->
+  <header class="sticky top-0 z-50 glass-panel border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 gap-4">
+        
+        <!-- Логотип та метадані роботи -->
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 via-brand-600 to-cyan-400 flex items-center justify-center shadow-glow-indigo text-white font-black text-lg">
+            9
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-bold tracking-tight text-white">Практична робота №9</span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">CSS Studio Pro</span>
+            </div>
+            <p class="text-xs text-slate-400 hidden sm:block">«CSS: візуальне оформлення об’єктів»</p>
+          </div>
+        </div>
+
+        <!-- Кнопки швидких режимів перегляду -->
+        <div class="flex items-center bg-slate-900/90 p-1 rounded-xl border border-white/10 shadow-inner">
+          <button id="viewBtnRetro" onclick="setMainView('retro')" title="Оформлення строго за таблицею методички"
+            class="px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all duration-200 bg-indigo-600 text-white shadow-sm">
+            <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+            Методичка (Classic)
+          </button>
+          
+          <button id="viewBtnSplit" onclick="setMainView('split')" title="Порівняння двох стилів поруч"
+            class="px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all duration-200 text-slate-400 hover:text-white">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+            Split View
+          </button>
+
+          <button id="viewBtnModern" onclick="setMainView('modern')" title="Модернізований сучасний UI"
+            class="px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all duration-200 text-slate-400 hover:text-white">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            Modern Web 3.0
+          </button>
+        </div>
+
+        <!-- Кнопка роздруку/PDF звіту -->
+        <div class="hidden md:flex items-center gap-2">
+          <button onclick="window.print()" class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 flex items-center gap-1.5 transition">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+            Друк звіту
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Вкладки розділів -->
+    <div class="border-t border-white/5 bg-slate-950/40">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav class="flex space-x-2 sm:space-x-8 overflow-x-auto py-2 text-xs sm:text-sm font-semibold scrollbar-none">
+          <button onclick="switchTab('studio')" id="tabNavStudio" class="tab-link active-tab text-indigo-400 border-b-2 border-indigo-500 pb-2 px-1 flex items-center gap-2">
+            🎨 1. Інтерактивна Студія
+          </button>
+          <button onclick="switchTab('inspector')" id="tabNavInspector" class="tab-link text-slate-400 hover:text-slate-200 pb-2 px-1 flex items-center gap-2">
+            ⚙️ 2. CSS Інспектор & Тюнінг
+          </button>
+          <button onclick="switchTab('quiz')" id="tabNavQuiz" class="tab-link text-slate-400 hover:text-slate-200 pb-2 px-1 flex items-center gap-2">
+            🏆 3. Тест і Контрольні Питання
+          </button>
+          <button onclick="switchTab('code')" id="tabNavCode" class="tab-link text-slate-400 hover:text-slate-200 pb-2 px-1 flex items-center gap-2">
+            📄 4. Код для звіту (HTML/CSS)
+          </button>
+          <button onclick="switchTab('theory')" id="tabNavTheory" class="tab-link text-slate-400 hover:text-slate-200 pb-2 px-1 flex items-center gap-2">
+            📖 5. Методичка та Теорія
+          </button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+
+    <!-- ========================================================
+         ВКЛАДКА 1: ІНТЕРАКТИВНА СТУДІЯ (STUDIO EXPERIENCE)
+         ======================================================== -->
+    <section id="sectionStudio" class="space-y-6">
+
+      <!-- Панель статусу поточного режиму та швидкі підказки -->
+      <div class="glass-panel rounded-2xl p-4 sm:p-5 border border-indigo-500/20 relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span id="currentModeBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-400/20 text-amber-300 border border-amber-400/30">
+                РЕЖИМ: МЕТОДИЧКА 2000-х
+              </span>
+              <span class="text-xs text-slate-400">Всі 6 стильових правил застосовано</span>
+            </div>
+            <h2 class="text-lg sm:text-xl font-bold text-white tracking-tight">
+              Візуалізація каскадних таблиць стилів для об'єктів веб-сторінки
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-300 max-w-3xl" id="currentModeDescription">
+              Повний набір вимог Практичної №9: світлосірий фон документа, кутова фонова емблема, Courier 10pt темносиній, абзацний відступ 1 см, заголовки Verdana 14pt/12pt, штрихована таблиця 3pt та динамічні посилання.
+            </p>
+          </div>
+
+          <!-- Швидкі дії -->
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="setMainView('retro')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/10 hover:bg-white/15 text-slate-200 border border-white/10 transition">
+              Класичний вигляд
+            </button>
+            <button onclick="setMainView('modern')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-gradient-to-r from-indigo-500 to-cyan-500 hover:opacity-90 text-white shadow-glow-indigo transition">
+              Сучасний дизайн
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Контейнер відображення (Single або Split) -->
+      <div id="viewContainerSingle" class="rounded-2xl overflow-hidden shadow-2xl border border-white/15">
+        
+        <!-- Заголовок вікна емулятора браузера -->
+        <div class="bg-slate-900 px-4 py-3 border-b border-white/10 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-rose-500/80 inline-block"></span>
+            <span class="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
+            <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
+            <span class="ml-2 text-xs font-mono text-slate-400" id="browserUrlBar">https://laboratory-work-09.edu.ua/index.html</span>
+          </div>
+          <div class="text-[11px] font-mono text-slate-400 bg-slate-800/80 px-2.5 py-1 rounded-md border border-white/5">
+            Viewport: 100% • CSS Render Mode
+          </div>
+        </div>
+
+        <!-- Сам контент полотна -->
+        <div id="canvasSingle" class="retro-theme min-h-[650px] transition-all duration-300">
+          
+          <div class="max-w-4xl mx-auto space-y-6">
+
+            <!-- Заголовок 1-го рівня -->
+            <h1 class="retro-h1">Каскадні таблиці стилів у сучасному веб-дизайні</h1>
+
+            <!-- Галерея ілюстрацій для модернізації (візуальний контент) -->
+            <div id="modernVisualShowcase" class="hidden grid grid-cols-1 sm:grid-cols-3 gap-4 my-6">
+              <div class="relative rounded-xl overflow-hidden group shadow-lg border border-white/10">
+                <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=600&q=80" alt="Web Development" class="w-full h-36 object-cover group-hover:scale-105 transition duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent p-3 flex flex-col justify-end">
+                  <span class="text-[10px] uppercase font-bold text-cyan-400 tracking-wider">Архітектура</span>
+                  <h4 class="text-xs font-bold text-white">Модульність CSS</h4>
+                </div>
+              </div>
+
+              <div class="relative rounded-xl overflow-hidden group shadow-lg border border-white/10">
+                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=80" alt="Code Editor" class="w-full h-36 object-cover group-hover:scale-105 transition duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent p-3 flex flex-col justify-end">
+                  <span class="text-[10px] uppercase font-bold text-indigo-400 tracking-wider">Синтаксис</span>
+                  <h4 class="text-xs font-bold text-white">Селектори та каскад</h4>
+                </div>
+              </div>
+
+              <div class="relative rounded-xl overflow-hidden group shadow-lg border border-white/10">
+                <img src="https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=600&q=80" alt="UI Design" class="w-full h-36 object-cover group-hover:scale-105 transition duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent p-3 flex flex-col justify-end">
+                  <span class="text-[10px] uppercase font-bold text-emerald-400 tracking-wider">UI/UX</span>
+                  <h4 class="text-xs font-bold text-white">Адаптивні сітки</h4>
+                </div>
+              </div>
+            </div>
+
+            <!-- Основний абзацний текст -->
+            <p class="retro-text">
+              Каскадні таблиці стилів (Cascading Style Sheets, CSS) — це формальна мова опису зовнішнього вигляду документа, створеного за допомогою мови розмітки. Завдяки CSS розробники відокремлюють логічну розмітку структури сторінки від візуального дизайну, що забезпечує гнучкість, централізоване керування та високу швидкість адаптації під будь-які екрани.
+            </p>
+
+            <p class="retro-text">
+              Принцип каскадності дозволяє застосовувати кілька стильових правил до одного елемента, при цьому пріоритет визначається специфічністю селекторів та порядком їх завантаження в браузер. У цій практичній роботі опрацьовуються базові властивості шрифтового оформлення, відступів, меж, фонів та інтерактивних станів.
+            </p>
+
+            <!-- Заголовок 2-го рівня -->
+            <h2 class="retro-h2">1. Стильові властивості таблиць та структурних об'єктів</h2>
+
+            <p class="retro-text">
+              Відповідно до умов практичної роботи №9, таблиця повинна мати абсолютно прозорий фон, штрихову межу (штрихова рамка) товщиною 3 пункти (3pt dashed), шрифт Courier з розміром 90% від базового. Оформлення першого рядка передбачає центральне вирівнювання з напівжирним накресленням шрифту, тоді як інші рядки вирівнюються по центру зі звичайним шрифтом.
+            </p>
+
+            <!-- Демонстраційна таблиця -->
+            <div class="overflow-x-auto my-3">
+              <table class="retro-table">
+                <thead>
+                  <tr>
+                    <th>№ з/п</th>
+                    <th>Візуальний елемент</th>
+                    <th>Встановлені властивості згідно методички</th>
+                    <th>CSS-синтаксис правила</th>
+                    <th>Статус тесту</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Документ (body)</td>
+                    <td>Світлосірий фон, малюнок у кутку без повтору</td>
+                    <td>background: #d3d3d3 url(...) no-repeat right bottom</td>
+                    <td>Перевірено</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>Текст (p)</td>
+                    <td>Courier, 10pt, темносиній, вліво, відступ 1 см</td>
+                    <td>font-size: 10pt; color: #00008b; text-indent: 1cm;</td>
+                    <td>Перевірено</td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>Заголовок 1-го рівня (h1)</td>
+                    <td>Verdana, 14pt, чорний, вліво, 1 см, напівжирний</td>
+                    <td>font-family: Verdana; font-weight: bold;</td>
+                    <td>Перевірено</td>
+                  </tr>
+                  <tr>
+                    <td>4</td>
+                    <td>Заголовок 2-го рівня (h2)</td>
+                    <td>Verdana, 12pt, світлосиній, вліво, 1 см, нахилений</td>
+                    <td>color: #1e90ff; font-style: italic;</td>
+                    <td>Перевірено</td>
+                  </tr>
+                  <tr>
+                    <td>5</td>
+                    <td>Посилання (a)</td>
+                    <td>Без підкреслення, bold, hover-ефекти</td>
+                    <td>text-decoration: none; a:hover { ... }</td>
+                    <td>Перевірено</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Заголовок 2-го рівня -->
+            <h2 class="retro-h2">2. Інтерактивні посилання та псевдоклас :hover</h2>
+
+            <p class="retro-text">
+              Особлива увага приділяється псевдокласам гіперпосилань. За початкового стану посилання не мають підкреслення і є напівжирними. При наведенні курсора миші (<span class="font-mono">:hover</span>) динамічно змінюється колір, гарнітура на Georgia та збільшується розмір шрифту до 12pt:
+            </p>
+
+            <!-- Блок посилань -->
+            <div class="my-4 p-4 rounded-xl border border-dashed border-slate-500/40 bg-black/5 flex flex-wrap gap-4 items-center">
+              <a href="#demo" class="retro-link" onclick="event.preventDefault()">🔗 Офіційна специфікація W3C</a>
+              <a href="#demo" class="retro-link" onclick="event.preventDefault()">⚡ MDN Web Docs: CSS Референс</a>
+              <a href="#demo" class="retro-link" onclick="event.preventDefault()">📘 Підручник із веб-оформлення</a>
+            </div>
+
+            <!-- Заголовок 2-го рівня -->
+            <h2 class="retro-h2">3. Марковані списки та контрольні властивості</h2>
+
+            <p class="retro-text">
+              Нижче наведено приклад маркованого списку із квадратними маркерами, що відповідає першому завданню контрольного блоку:
+            </p>
+
+            <ul class="list-square pl-8 space-y-1 my-2 text-xs sm:text-sm" style="list-style-type: square;">
+              <li>Селектор: <code>ul { list-style-type: square; line-height: 130%; }</code></li>
+              <li>Використання растрового маркера: <code>list-style-image: url('2.jpg');</code></li>
+              <li>Керування міжрядковим інтервалом через властивість <code>line-height</code>.</li>
+            </ul>
+
+            <p class="retro-text">
+              Завдяки цьому сторінка демонструє повну відповідність навчальним стандартам дисципліни.
+            </p>
+
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Розділений вигляд Split-View (До vs Після) -->
+      <div id="viewContainerSplit" class="hidden space-y-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          
+          <!-- Ліва колонка: Класичний стиль -->
+          <div class="rounded-2xl overflow-hidden shadow-xl border border-white/10 flex flex-col">
+            <div class="bg-amber-950/50 px-4 py-2.5 border-b border-amber-500/20 flex items-center justify-between text-xs font-semibold text-amber-200">
+              <span class="flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                ДО: За методичкою (Classic CSS)
+              </span>
+              <span class="font-mono text-[11px] text-amber-300/70">Courier / 10pt / 1cm indent</span>
+            </div>
+            
+            <div class="retro-theme flex-1 p-6 text-xs">
+              <h1 class="retro-h1 !text-base">Каскадні таблиці стилів</h1>
+              <p class="retro-text !text-[11px]">
+                Текст із абзацним відступом 1 см, темно-синій колір, шрифт Courier. Штриховані рамки таблиці товщиною 3pt.
+              </p>
+              <table class="retro-table !my-3">
+                <tr><th>Елемент</th><th>Властивість</th></tr>
+                <tr><td>Текст</td><td>Courier, 10pt</td></tr>
+                <tr><td>Рамка</td><td>3pt dashed</td></tr>
+              </table>
+              <div class="mt-4">
+                <a href="#test" class="retro-link" onclick="event.preventDefault()">Тестове посилання (:hover)</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Права колонка: Сучасний стиль -->
+          <div class="rounded-2xl overflow-hidden shadow-xl border border-white/10 flex flex-col">
+            <div class="bg-indigo-950/50 px-4 py-2.5 border-b border-indigo-500/20 flex items-center justify-between text-xs font-semibold text-indigo-200">
+              <span class="flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span>
+                ПІСЛЯ: Сучасний стиль (Modern Studio)
+              </span>
+              <span class="font-mono text-[11px] text-cyan-300/70">Plus Jakarta Sans / Glass UI</span>
+            </div>
+
+            <div class="modern-theme flex-1 p-6 text-xs">
+              <h1 class="retro-h1 !text-lg !mb-2">Каскадні таблиці стилів</h1>
+              <p class="retro-text !text-xs !leading-relaxed">
+                Сучасна адаптивна типографіка з плавною міжрядковою відстанню, картками з розмиттям фону та градієнтними акцентами.
+              </p>
+              <table class="retro-table !my-3">
+                <thead><tr><th>Елемент</th><th>Оновлення</th></tr></thead>
+                <tbody>
+                  <tr><td>Текст</td><td>Адаптивний Inter / 16px</td></tr>
+                  <tr><td>Рамка</td><td>М'які тіні та заокруглення</td></tr>
+                </tbody>
+              </table>
+              <div class="mt-4">
+                <a href="#test" class="retro-link" onclick="event.preventDefault()">🔗 Інтерактивний бейдж-лінк</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ========================================================
+         ВКЛАДКА 2: CSS ІНСПЕКТОР ТА КОНСТРУКТОР СТИЛІВ
+         ======================================================== -->
+    <section id="sectionInspector" class="hidden space-y-6">
+      <div class="glass-panel rounded-2xl p-6 border border-white/10">
+        <div class="flex items-center gap-3 pb-4 border-b border-white/10">
+          <div class="p-2.5 bg-indigo-600/20 border border-indigo-500/30 text-indigo-400 rounded-xl">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-white">Інтерактивний Style Inspector & Tuning</h3>
+            <p class="text-xs text-slate-400">Налаштовуйте властивості CSS наживо та спостерігайте за миттєвою зміною рендерингу.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+          
+          <!-- Панель контролів -->
+          <div class="space-y-5 bg-slate-900/60 p-5 rounded-xl border border-white/5">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-indigo-400">Параметри оформлення</h4>
+            
+            <!-- Розмір шрифту тексту -->
+            <div>
+              <div class="flex justify-between text-xs font-medium text-slate-300 mb-1">
+                <span>Розмір тексту (font-size):</span>
+                <span id="labelFontSize" class="font-mono text-cyan-400">10pt</span>
+              </div>
+              <input type="range" min="8" max="18" value="10" id="sliderFontSize" oninput="updateCustomStyles()"
+                class="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-indigo-500">
+            </div>
+
+            <!-- Абзацний відступ -->
+            <div>
+              <div class="flex justify-between text-xs font-medium text-slate-300 mb-1">
+                <span>Абзацний відступ (text-indent):</span>
+                <span id="labelIndent" class="font-mono text-cyan-400">1.0 cm</span>
+              </div>
+              <input type="range" min="0" max="3" step="0.2" value="1.0" id="sliderIndent" oninput="updateCustomStyles()"
+                class="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-indigo-500">
+            </div>
+
+            <!-- Товщина рамки таблиці -->
+            <div>
+              <div class="flex justify-between text-xs font-medium text-slate-300 mb-1">
+                <span>Рамка таблиці (border-width):</span>
+                <span id="labelBorderWidth" class="font-mono text-cyan-400">3 pt</span>
+              </div>
+              <input type="range" min="1" max="8" value="3" id="sliderBorderWidth" oninput="updateCustomStyles()"
+                class="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-indigo-500">
+            </div>
+
+            <!-- Колір тексту -->
+            <div>
+              <label class="block text-xs font-medium text-slate-300 mb-1">Колір основного тексту:</label>
+              <div class="flex items-center gap-3">
+                <input type="color" id="pickerTextColor" value="#00008b" oninput="updateCustomStyles()"
+                  class="w-10 h-8 rounded bg-transparent border border-white/20 cursor-pointer">
+                <span id="labelTextColor" class="text-xs font-mono text-slate-400">#00008B (DarkBlue)</span>
+              </div>
+            </div>
+
+            <!-- Радіус заокруглення -->
+            <div>
+              <div class="flex justify-between text-xs font-medium text-slate-300 mb-1">
+                <span>Заокруглення кутів (border-radius):</span>
+                <span id="labelRadius" class="font-mono text-cyan-400">0 px</span>
+              </div>
+              <input type="range" min="0" max="24" value="0" id="sliderRadius" oninput="updateCustomStyles()"
+                class="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-indigo-500">
+            </div>
+
+            <button onclick="resetInspector()" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300 rounded-lg border border-white/10 transition">
+              Скинути до значень за методичкою
+            </button>
+          </div>
+
+          <!-- Живий майданчик попереднього перегляду -->
+          <div class="lg:col-span-2 flex flex-col space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Живий результат CSS:</span>
+              <span class="text-xs font-mono text-indigo-400">Dynamic Rule Injection</span>
+            </div>
+
+            <div id="inspectorCanvas" class="retro-theme rounded-xl border border-white/15 p-6 flex-1 min-h-[350px]">
+              <h1 class="retro-h1">Динамічний тестовий заголовок</h1>
+              <p class="retro-text" id="inspectorSampleText">
+                Цей абзац динамічно змінює розмір шрифту, абзацний відступ та колір тексту відповідно до положення повзунків у лівій панелі управління.
+              </p>
+              <table class="retro-table" id="inspectorSampleTable">
+                <tr>
+                  <th>Властивість</th>
+                  <th>Поточне значення</th>
+                </tr>
+                <tr>
+                  <td>text-indent</td>
+                  <td id="tableSampleIndent">1.0cm</td>
+                </tr>
+                <tr>
+                  <td>border-width</td>
+                  <td id="tableSampleBorder">3pt dashed</td>
+                </tr>
+              </table>
+              <div class="mt-4">
+                <a href="#inspectorLink" class="retro-link" onclick="event.preventDefault()">Наведіть мишкою для перевірки hover-ефекту</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         ВКЛАДКА 3: ТЕСТ І КОНТРОЛЬНІ ПИТАННЯ (QUIZ MASTER)
+         ======================================================== -->
+    <section id="sectionQuiz" class="hidden space-y-6">
+      
+      <!-- Панель прогресу тесту -->
+      <div class="glass-panel rounded-2xl p-6 border border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div>
+          <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+            ПЕРЕВІРКА ЗНАНЬ
+          </span>
+          <h3 class="text-xl font-bold text-white mt-1">Контрольні питання до практичної роботи №9</h3>
+          <p class="text-xs sm:text-sm text-slate-400">Пройдіть тест із миттєвою перевіркою відповідей та детальним поясненням синтаксису CSS.</p>
+        </div>
+
+        <div class="flex items-center gap-4 bg-slate-900/80 px-5 py-3 rounded-xl border border-white/10">
+          <div class="text-center">
+            <span class="text-xs text-slate-400">Правильних:</span>
+            <div id="quizScoreText" class="text-xl font-black text-emerald-400">0 / 8</div>
+          </div>
+          <button onclick="resetQuiz()" class="px-3 py-1.5 text-xs font-semibold bg-white/10 hover:bg-white/20 text-white rounded-lg transition">
+            Скинути відповіді
+          </button>
+        </div>
+      </div>
+
+      <!-- Картки запитань -->
+      <div class="space-y-5" id="quizContainer">
+
+        <!-- Питання 1 -->
+        <div class="glass-panel rounded-xl p-5 border border-white/10 space-y-3" id="q1Box">
+          <div class="flex items-start justify-between gap-2">
+            <span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 text-xs font-mono font-bold">Питання 1</span>
+            <span class="text-xs font-semibold text-slate-400" id="q1Status">Не розв'язано</span>
+          </div>
+          <h4 class="text-sm sm:text-base font-bold text-white">
+            Який з наведених нижче описів стилів відповідає заданому словесному опису: «Стиль маркованого списка: тип списку — квадрат, розмір шрифта — 18 пунктів, маркер — малюнок 2.jpg, відстань між рядками — 130%»?
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+            <button onclick="checkQuiz(1, 'a')" class="quiz-btn text-left p-3 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-white/10 text-xs font-mono transition">
+              <strong>а)</strong> ul { list-style-type: square; font-size:18pt; font-family: Times New Roman; list-image: url(2.jpg); line-height:130% }
+            </button>
+            <button onclick="checkQuiz(1, 'b')" class="quiz-btn text-left p-3 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-white/10 text-xs font-mono transition">
+              <strong>б)</strong> ul { list-style-type: square; font-size:18pt; font-family: Times New Roman; list-style-image: url(2.jpg); line-height:130% }
+            </button>
+            <button onclick="checkQuiz(1, 'c')" class="quiz-btn text-left p-3 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-white/10 text-xs font-mono transition">
+              <strong>в)</strong> ul { list-style-type: square; font-size:18pt; font-family: Times New Roman; list-style-image: url(2.jpg); letter-height:130% }
+            </button>
+          </div>
+          <div id="q1Feedback" class="hidden p-3 rounded-lg text-xs"></div>
+        </div>
+
+        <!-- Питання 2 -->
+        <div class="glass-panel rounded-xl p-5 border border-white/10 space-y-3" id="q2Box">
+          <div class="flex items-start justify-between gap-2">
+            <span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 text-xs font-mono font-bold">Питання 2</span>
+            <span class="text-xs font-semibold text-slate-400" id="q2Status">Не розв'язано</span>
+          </div>
+          <h4 class="text-sm sm:text-base font-bold text-white">
+            Який з описів стилів відповідає словесному опису: «Стиль h1: тип шрифта — Verdana, розмір — 20 пунктів, жирний шрифт, вирівнювання по центру, відстань між буквами 10 пунктів, колір червоний»?
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+            <button onclick="checkQuiz(2, 'a')" class="quiz-btn text-left p-3 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-white/10 text-xs font-mono transition">
+              <strong>а)</strong> h1 { font-family: Verdana; font-size:20pt; color-red; font-weight: bolder; text-align: center; line-neight:10pt }
+            </button>
+            <button onclick="checkQuiz(2, 'b')" class="quiz-btn text-left p-3 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-white/10 text-xs font-mono transition">
+              <strong>б)</strong> h1 { font-family: Verdana; font-size:20pt; color-red; font-style: bolder; text-align: center; letter-spacing: 10pt }
+            </button>
+            <button onclick="checkQuiz(2, 'c')" class="quiz-btn text-left p-3 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-white/10 text-xs font-mono transition">
+              <strong>в)</strong> h1 { font-family: Verdana; font-size:20pt; color: red; font-weight: bolder; text-align: center; letter-spacing: 10pt }
+            </button>
+          </div>
+          <div id="q2Feedback" class="hidden p-3 rounded-lg text-xs"></div>
+        </div>
+
+        <!-- Питання 3 -->
+        <div class="glass-panel rounded-xl p-5 border border-white/10 space-y-3" id="q3Box">
+          <div class="flex items-start justify-between gap-2">
+            <span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 text-xs font-mono font-bold">Питання 3</span>
+            <span class="text-xs font-semibold text-slate-400" id="q3Status">Не розв'язано</span>
+          </div>
+          <h4 class="text-sm sm:text-base font-bold text-white">
+            Який з наведених нижче описів задає фонову картинку r1.jpg з повторенням малюнка строго по вертикалі?
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+            <button onclick="checkQuiz(3, 'a')" class="quiz-btn text-left p-3 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-white/10 text-xs font-mono transition">
+              <strong>а)</strong> body { background-image: url(r1.jpg); background-repeat: repeat; }
+            </button>
+            <button onclick="checkQuiz(3, 'b')" class="quiz-btn text-left p-3 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-white/10 text-xs font-mono transition">
+              <strong>б)</strong> body { background: url(r1.jpg); background-repeat: no-repeat; }
+            </button>
+            <button onclick="checkQuiz(3, 'c')" class="quiz-btn text-left p-3 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-white/10 text-xs font-mono transition">
+              <strong>в)</strong> body { background-image: url(r1.jpg); background-repeat: repeat-y; }
+            </button>
+          </div>
+          <div id="q3Feedback" class="hidden p-3 rounded-lg text-xs"></div>
+        </div>
+
+        <!-- Питання 4-8 у компактних інтерактивних блоках -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          
+          <!-- Питання 4 -->
+          <div class="glass-panel rounded-xl p-5 border border-white/10 space-y-2" id="q4Box">
+            <span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 text-xs font-mono font-bold">Питання 4: Способи стилів</span>
+            <h5 class="text-xs font-bold text-white">Які існують основні способи впровадження стилів в HTML-код?</h5>
+            <div class="space-y-1.5 pt-1 text-xs">
+              <button onclick="checkQuiz(4, 'all')" class="quiz-btn w-full text-left p-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-white/10 transition">
+                Зовнішня таблиця (&lt;link&gt;), внутрішні стилі (&lt;style&gt;), вбудовані рядкові (атрибут style)
+              </button>
+            </div>
+            <div id="q4Feedback" class="hidden p-2.5 rounded-lg text-xs"></div>
+          </div>
+
+          <!-- Питання 5 -->
+          <div class="glass-panel rounded-xl p-5 border border-white/10 space-y-2" id="q5Box">
+            <span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 text-xs font-mono font-bold">Питання 5: Тег link</span>
+            <h5 class="text-xs font-bold text-white">Який рядок правильний для підключення style.css у блоці &lt;head&gt;?</h5>
+            <div class="space-y-1.5 pt-1 text-xs font-mono">
+              <button onclick="checkQuiz(5, 'b')" class="quiz-btn w-full text-left p-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-white/10 transition">
+                &lt;link rel="stylesheet" href="style.css" type="text/css"&gt;
+              </button>
+            </div>
+            <div id="q5Feedback" class="hidden p-2.5 rounded-lg text-xs"></div>
+          </div>
+
+          <!-- Питання 6 -->
+          <div class="glass-panel rounded-xl p-5 border border-white/10 space-y-2" id="q6Box">
+            <span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 text-xs font-mono font-bold">Питання 6: Без помилок</span>
+            <h5 class="text-xs font-bold text-white">Який стильовий опис не містить синтаксичних помилок?</h5>
+            <div class="space-y-1.5 pt-1 text-xs font-mono">
+              <button onclick="checkQuiz(6, 'b')" class="quiz-btn w-full text-left p-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-white/10 transition">
+                p { color: red; font-size:14pt }
+              </button>
+            </div>
+            <div id="q6Feedback" class="hidden p-2.5 rounded-lg text-xs"></div>
+          </div>
+
+          <!-- Питання 7 та 8 -->
+          <div class="glass-panel rounded-xl p-5 border border-white/10 space-y-2" id="q7Box">
+            <span class="px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 text-xs font-mono font-bold">Питання 7 та 8: Псевдокласи</span>
+            <h5 class="text-xs font-bold text-white">Правильний порядок: visited: зелений, active: червоний, hover: жовтий:</h5>
+            <div class="space-y-1.5 pt-1 text-xs font-mono">
+              <button onclick="checkQuiz(7, 'a')" class="quiz-btn w-full text-left p-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-white/10 transition">
+                a:visited { color: green } a:active { color: red } a:hover { color: yellow }
+              </button>
+            </div>
+            <div id="q7Feedback" class="hidden p-2.5 rounded-lg text-xs"></div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================================
+         ВКЛАДКА 4: КОД ДЛЯ ЗВІТУ (REPORT GENERATOR)
+         ======================================================== -->
+    <section id="sectionCode" class="hidden space-y-6">
+      <div class="glass-panel rounded-2xl p-6 border border-white/10">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-white/10">
+          <div>
+            <h3 class="text-lg font-bold text-white">Вихідні файли для практичного звіту</h3>
+            <p class="text-xs text-slate-400">Скопіюйте код файлів style.css або index.html або роздрукуйте готовий звіт.</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <button onclick="copyToClipboard('styleFileCode', this)" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/20 text-white border border-white/10 flex items-center gap-2 transition">
+              <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+              Копіювати style.css
+            </button>
+            <button onclick="copyToClipboard('htmlFileCode', this)" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow-glow-indigo flex items-center gap-2 transition">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+              Копіювати index.html
+            </button>
+          </div>
+        </div>
+
+        <div id="copyAlert" class="hidden my-3 p-3 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-xl text-xs flex items-center gap-2">
+          <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          Файл успішно скопійовано до буфера обміну!
+        </div>
+
+        <!-- Файл 1: style.css -->
+        <div class="mt-6">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-mono text-amber-400 font-bold bg-amber-400/10 px-2.5 py-1 rounded-md border border-amber-400/20">style.css</span>
+            <span class="text-[11px] text-slate-400">Правила оформлення об'єктів згідно завдання</span>
+          </div>
+          <pre class="bg-slate-950 p-4 rounded-xl text-xs font-mono text-slate-200 border border-white/10 overflow-x-auto leading-relaxed" id="styleFileCode"><code>/* ========================================================
+   ПРАКТИЧНА РОБОТА №9. ФАЙЛ СТИЛІВ: style.css
+   Тема: CSS візуальне оформлення об’єктів
+   ======================================================== */
+
+/* 1. Документ: фон світлосірий, фоновий малюнок без повторень у правому нижньому куті */
+body {
+    background-color: #d3d3d3;
+    background-image: url('bg.png');
+    background-repeat: no-repeat;
+    background-position: right bottom;
+    background-attachment: fixed;
+}
+
+/* 2. Текст: Courier, 10pt, темносиній, вліво, абзацний відступ 1 см */
+p {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 10pt;
+    color: #00008b; /* Темносиній колір */
+    text-align: left;
+    text-indent: 1cm;
+}
+
+/* 3. Заголовки 1-го рівня: Verdana, 14pt, чорний, вліво, відступ 1 см, напівжирний */
+h1 {
+    font-family: Verdana, sans-serif;
+    font-size: 14pt;
+    color: #000000;
+    text-align: left;
+    text-indent: 1cm;
+    font-weight: bold;
+}
+
+/* 4. Заголовки 2-го рівня: Verdana, 12pt, світлосиній, вліво, відступ 1 см, напівжирний нахилений */
+h2 {
+    font-family: Verdana, sans-serif;
+    font-size: 12pt;
+    color: #1e90ff; /* Світлосиній колір */
+    text-align: left;
+    text-indent: 1cm;
+    font-weight: bold;
+    font-style: italic;
+}
+
+/* 5. Посилання: без підкреслення, напівжирний, прозорий фон */
+a {
+    text-decoration: none;
+    font-weight: bold;
+    background-color: transparent;
+    color: #00008b;
+}
+
+/* При наведенні курсора: зміна кольору, гарнітури та розміру шрифту */
+a:hover {
+    color: #dc2626;
+    font-family: Georgia, serif;
+    font-size: 12pt;
+}
+
+/* 6. Таблиці: фон прозорий, рамка штрихова 3 пт, шрифт Courier 90% */
+table {
+    background-color: transparent;
+    border: 3pt dashed #00008b;
+    border-collapse: collapse;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 90%;
+    width: 100%;
+}
+
+th, td {
+    border: 1pt dashed #00008b;
+    padding: 6px 12px;
+}
+
+/* Оформлення першого рядка: по центру, шрифт напівжирний */
+table tr:first-child, table th {
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Оформлення інших рядків: по центру, шрифт нормальний */
+table tr:not(:first-child) td {
+    text-align: center;
+    font-weight: normal;
+}</code></pre>
+        </div>
+
+        <!-- Файл 2: index.html -->
+        <div class="mt-6">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-mono text-cyan-400 font-bold bg-cyan-400/10 px-2.5 py-1 rounded-md border border-cyan-400/20">index.html</span>
+            <span class="text-[11px] text-slate-400">Структурний каркас веб-сторінки</span>
+          </div>
+          <pre class="bg-slate-950 p-4 rounded-xl text-xs font-mono text-slate-200 border border-white/10 overflow-x-auto leading-relaxed" id="htmlFileCode"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="uk"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Практична робота №9 — Візуальне оформлення об'єктів&lt;/title&gt;
+    &lt;!-- Підключення зовнішнього файлу стилів --&gt;
+    &lt;link rel="stylesheet" href="style.css" type="text/css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+    &lt;h1&gt;Каскадні таблиці стилів у веб-розробці&lt;/h1&gt;
+
+    &lt;p&gt;
+        Каскадні таблиці стилів (CSS) дозволяють гнучко налаштовувати вигляд
+        кожного HTML-елемента сторінки. Ми відокремлюємо структуру від оформлення.
+    &lt;/p&gt;
+
+    &lt;h2&gt;1. Стилізація таблиць і списків&lt;/h2&gt;
+
+    &lt;table&gt;
+        &lt;tr&gt;
+            &lt;th&gt;№&lt;/th&gt;
+            &lt;th&gt;Об'єкт&lt;/th&gt;
+            &lt;th&gt;Властивість&lt;/th&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;1&lt;/td&gt;
+            &lt;td&gt;Текст p&lt;/td&gt;
+            &lt;td&gt;Courier, 10pt, indent 1cm&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;2&lt;/td&gt;
+            &lt;td&gt;Таблиця&lt;/td&gt;
+            &lt;td&gt;3pt dashed, Courier 90%&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt;
+
+    &lt;h2&gt;2. Інтерактивні посилання&lt;/h2&gt;
+
+    &lt;p&gt;
+        Відвідайте офіційний ресурс: &lt;a href="https://w3.org"&gt;Консорціум W3C&lt;/a&gt;
+    &lt;/p&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================
+         ВКЛАДКА 5: ТЕОРІЯ ТА МЕТОДИЧНІ ВКАЗІВКИ
+         ======================================================== -->
+    <section id="sectionTheory" class="hidden space-y-6">
+      <div class="glass-panel rounded-2xl p-6 border border-white/10 space-y-6">
+        <div>
+          <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+            МЕТОДИЧНИЙ ДОВІДНИК
+          </span>
+          <h3 class="text-xl font-bold text-white mt-1">Теоретичні відомості до практичної роботи №9</h3>
+          <p class="text-xs text-slate-400">Швидка шпаргалка для захисту роботи перед викладачем.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="p-4 rounded-xl bg-slate-900/60 border border-white/5 space-y-2">
+            <h4 class="text-sm font-bold text-indigo-400">1. Одиниці вимірювання в CSS</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              <strong>pt (пункти):</strong> традиційна типографічна одиниця (1 pt = 1/72 дюйма). Часто зустрічається у навчальних методичках для фіксованого розміру тексту.<br>
+              <strong>cm (сантиметри):</strong> абсолютна фізична одиниця, яка в браузері прив'язана до розрахункового DPI (96px = 2.54cm).<br>
+              <strong>% (відсотки):</strong> відносна одиниця, що обчислюється від розміру шрифту батьківського контейнера (наприклад, 90% для таблиць).
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-900/60 border border-white/5 space-y-2">
+            <h4 class="text-sm font-bold text-cyan-400">2. Властивість background</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Складається з кількох підвластивостей:<br>
+              • <code>background-color: #d3d3d3</code> — заливка кольором.<br>
+              • <code>background-image: url(...)</code> — шлях до малюнка.<br>
+              • <code>background-repeat: no-repeat</code> — заборона тиражування.<br>
+              • <code>background-position: right bottom</code> — позиціонування у правому нижньому куті.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-900/60 border border-white/5 space-y-2">
+            <h4 class="text-sm font-bold text-emerald-400">3. Псевдокласи посилань (LVHA)</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Щоб псевдокласи працювали коректно, слід дотримуватись класичного порядку <strong>L-V-H-A</strong>:<br>
+              1. <code>:link</code> — звичайне невідвідане посилання.<br>
+              2. <code>:visited</code> — посилання, яке користувач уже відкривав.<br>
+              3. <code>:hover</code> — стан при наведенні курсора.<br>
+              4. <code>:active</code> — момент натискання кнопки миші.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-900/60 border border-white/5 space-y-2">
+            <h4 class="text-sm font-bold text-amber-400">4. Рамки таблиці (border-style)</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Значення <code>dashed</code> створює штриховану лінію, на відміну від <code>dotted</code> (крапкова) або <code>solid</code> (суцільна). Властивість <code>border-collapse: collapse</code> з'єднує подвійні рамки комірок в одну лінію.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Підвал сторінки -->
+  <footer class="glass-panel border-t border-white/10 mt-auto py-5 text-center text-xs text-slate-400">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>CSS Studio 9 • Спеціально розроблено для практичного практикуму</span>
+      </div>
+      <div class="text-[11px] text-slate-500">
+        HTML5 • Modern CSS3 • JavaScript Interaction Engine
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Поточний стан перегляду
+    let activeMainView = 'retro';
+    let quizScore = 0;
+    const answeredQuestions = new Set();
+
+    // Перемикання головних режимів: retro, split, modern
+    function setMainView(mode) {
+      activeMainView = mode;
+      const canvasSingle = document.getElementById('canvasSingle');
+      const containerSingle = document.getElementById('viewContainerSingle');
+      const containerSplit = document.getElementById('viewContainerSplit');
+      const btnRetro = document.getElementById('viewBtnRetro');
+      const btnSplit = document.getElementById('viewBtnSplit');
+      const btnModern = document.getElementById('viewBtnModern');
+      const badge = document.getElementById('currentModeBadge');
+      const desc = document.getElementById('currentModeDescription');
+      const modernGallery = document.getElementById('modernVisualShowcase');
+
+      // Скидання стилів кнопок
+      [btnRetro, btnSplit, btnModern].forEach(btn => {
+        btn.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all duration-200 text-slate-400 hover:text-white';
+      });
+
+      if (mode === 'retro') {
+        containerSingle.classList.remove('hidden');
+        containerSplit.classList.add('hidden');
+        canvasSingle.className = 'retro-theme min-h-[650px] transition-all duration-300';
+        modernGallery.classList.add('hidden');
+        btnRetro.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all duration-200 bg-indigo-600 text-white shadow-sm';
+        badge.textContent = 'РЕЖИМ: МЕТОДИЧКА 2000-х';
+        badge.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-400/20 text-amber-300 border border-amber-400/30';
+        desc.textContent = 'Суворе виконання таблиці практичної роботи №9: Courier 10pt темносиній, абзацний відступ 1 см, Verdana 14pt/12pt, штриховані рамки таблиці 3pt, фонова емблема в кутку без повтору.';
+      } else if (mode === 'split') {
+        containerSingle.classList.add('hidden');
+        containerSplit.classList.remove('hidden');
+        btnSplit.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all duration-200 bg-indigo-600 text-white shadow-sm';
+        badge.textContent = 'РЕЖИМ: SPLIT VIEW (ПОРІВНЯННЯ ДО І ПІСЛЯ)';
+        badge.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-cyan-400/20 text-cyan-300 border border-cyan-400/30';
+        desc.textContent = 'Співставлення двох епох веб-оформлення: ліворуч — вимоги за методичкою (Classic CSS 2.1), праворуч — модернізований Neumorphic Glass інтерфейс.';
+      } else if (mode === 'modern') {
+        containerSingle.classList.remove('hidden');
+        containerSplit.classList.add('hidden');
+        canvasSingle.className = 'modern-theme min-h-[650px] transition-all duration-300';
+        modernGallery.classList.remove('hidden');
+        btnModern.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all duration-200 bg-indigo-600 text-white shadow-sm';
+        badge.textContent = 'РЕЖИМ: MODERN WEB 3.0 UI';
+        badge.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-400/20 text-emerald-300 border border-emerald-400/30';
+        desc.textContent = 'Ультрасучасний редизайн: градієнтні акценти, шрифти Plus Jakarta Sans/Inter, розмиття фону backdrop-filter, фотоілюстрації та плавні тіні.';
+      }
+    }
+
+    // Перемикання вкладок верхньої навігації
+    function switchTab(tabId) {
+      const tabs = ['studio', 'inspector', 'quiz', 'code', 'theory'];
+      tabs.forEach(t => {
+        const section = document.getElementById('section' + t.charAt(0).toUpperCase() + t.slice(1));
+        const navBtn = document.getElementById('tabNav' + t.charAt(0).toUpperCase() + t.slice(1));
+        
+        if (t === tabId) {
+          section.classList.remove('hidden');
+          navBtn.className = 'tab-link active-tab text-indigo-400 border-b-2 border-indigo-500 pb-2 px-1 flex items-center gap-2';
+        } else {
+          section.classList.add('hidden');
+          navBtn.className = 'tab-link text-slate-400 hover:text-slate-200 pb-2 px-1 flex items-center gap-2';
+        }
+      });
+    }
+
+    // Живий CSS інспектор
+    function updateCustomStyles() {
+      const fontSize = document.getElementById('sliderFontSize').value;
+      const indent = document.getElementById('sliderIndent').value;
+      const borderWidth = document.getElementById('sliderBorderWidth').value;
+      const textColor = document.getElementById('pickerTextColor').value;
+      const radius = document.getElementById('sliderRadius').value;
+
+      document.getElementById('labelFontSize').textContent = fontSize + 'pt';
+      document.getElementById('labelIndent').textContent = indent + ' cm';
+      document.getElementById('labelBorderWidth').textContent = borderWidth + ' pt';
+      document.getElementById('labelTextColor').textContent = textColor;
+      document.getElementById('labelRadius').textContent = radius + ' px';
+
+      // Оновлення зразка
+      const sampleText = document.getElementById('inspectorSampleText');
+      const sampleTable = document.getElementById('inspectorSampleTable');
+
+      sampleText.style.fontSize = fontSize + 'pt';
+      sampleText.style.textIndent = indent + 'cm';
+      sampleText.style.color = textColor;
+      
+      sampleTable.style.borderWidth = borderWidth + 'pt';
+      sampleTable.style.borderColor = textColor;
+      sampleTable.style.borderRadius = radius + 'px';
+
+      document.getElementById('tableSampleIndent').textContent = indent + 'cm';
+      document.getElementById('tableSampleBorder').textContent = borderWidth + 'pt dashed';
+    }
+
+    function resetInspector() {
+      document.getElementById('sliderFontSize').value = 10;
+      document.getElementById('sliderIndent').value = 1.0;
+      document.getElementById('sliderBorderWidth').value = 3;
+      document.getElementById('pickerTextColor').value = '#00008b';
+      document.getElementById('sliderRadius').value = 0;
+      updateCustomStyles();
+    }
+
+    // Копіювання в буфер обміну
+    function copyToClipboard(elementId, btnElement) {
+      const text = document.getElementById(elementId).innerText;
+      const tempArea = document.createElement('textarea');
+      tempArea.value = text;
+      tempArea.style.position = 'fixed';
+      tempArea.style.opacity = '0';
+      document.body.appendChild(tempArea);
+      tempArea.select();
+
+      try {
+        document.execCommand('copy');
+        const alert = document.getElementById('copyAlert');
+        alert.classList.remove('hidden');
+        btnElement.classList.add('btn-copied');
+        setTimeout(() => {
+          alert.classList.add('hidden');
+          btnElement.classList.remove('btn-copied');
+        }, 2500);
+      } catch (err) {
+        console.error('Помилка копіювання: ', err);
+      } finally {
+        document.body.removeChild(tempArea);
+      }
+    }
+
+    // Перевірка контрольного тесту
+    const quizSolutions = {
+      1: {
+        correct: 'b',
+        explanation: '✅ Правильно: <code>list-style-image: url(2.jpg);</code> і <code>line-height: 130%;</code>. У варіанті (а) помилкова назва list-image, а у варіанті (в) неіснуюче letter-height.'
+      },
+      2: {
+        correct: 'c',
+        explanation: '✅ Точно: жирність шрифту вказується як <code>font-weight: bolder;</code>, а відстань між літерами — <code>letter-spacing: 10pt;</code>. У варіанті (б) помилково застосовано font-style.'
+      },
+      3: {
+        correct: 'c',
+        explanation: '✅ Вірно: значення <code>repeat-y</code> вказує на циклічне повторення зображення строго по вертикальній осі Y.'
+      },
+      4: {
+        correct: 'all',
+        explanation: '✅ Абсолютно вірно: в HTML існують три основні способи: зовнішня таблиця (&lt;link&gt;), внутрішні стилі (&lt;style&gt;) та вбудовані рядкові стилі (атрибут style).'
+      },
+      5: {
+        correct: 'b',
+        explanation: '✅ Вірно: синтаксис <code>&lt;link rel="stylesheet" href="style.css" type="text/css"&gt;</code> є класичним веб-стандартом.'
+      },
+      6: {
+        correct: 'b',
+        explanation: '✅ Правильно: <code>p { color: red; font-size:14pt }</code> не містить жодної помилки. Варіант (а) має знак "=" та одрук 14ptr, а (с) не має дужок.'
+      },
+      7: {
+        correct: 'a',
+        explanation: '✅ Відмінно: правильна комбінація псевдокласів посилань: a:visited { color: green }, a:active { color: red }, a:hover { color: yellow }.'
+      }
+    };
+
+    function checkQuiz(qNumber, answer) {
+      const fbBox = document.getElementById('q' + qNumber + 'Feedback');
+      const status = document.getElementById('q' + qNumber + 'Status');
+      const sol = quizSolutions[qNumber];
+
+      fbBox.classList.remove('hidden');
+
+      if (answer === sol.correct || sol.correct === 'all') {
+        fbBox.className = 'p-3 rounded-lg text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+        fbBox.innerHTML = sol.explanation;
+        if (status) {
+          status.textContent = '✓ Зараховано';
+          status.className = 'text-xs font-semibold text-emerald-400';
+        }
+
+        if (!answeredQuestions.has(qNumber)) {
+          answeredQuestions.add(qNumber);
+          quizScore++;
+          document.getElementById('quizScoreText').textContent = quizScore + ' / 8';
+        }
+      } else {
+        fbBox.className = 'p-3 rounded-lg text-xs bg-rose-500/20 text-rose-300 border border-rose-500/30';
+        fbBox.innerHTML = '❌ Неправильна відповідь. Уважно зверніть увагу на синтаксис CSS властивостей та спробуйте ще раз!';
+        if (status) {
+          status.textContent = '✕ Помилка';
+          status.className = 'text-xs font-semibold text-rose-400';
+        }
+      }
+    }
+
+    function resetQuiz() {
+      answeredQuestions.clear();
+      quizScore = 0;
+      document.getElementById('quizScoreText').textContent = '0 / 8';
+      for (let i = 1; i <= 7; i++) {
+        const fb = document.getElementById('q' + i + 'Feedback');
+        const st = document.getElementById('q' + i + 'Status');
+        if (fb) fb.classList.add('hidden');
+        if (st) {
+          st.textContent = "Не розв'язано";
+          st.className = 'text-xs font-semibold text-slate-400';
+        }
+      }
+    }
+
+    // Початкова ініціалізація після завантаження
+    window.onload = function() {
+      updateCustomStyles();
+    };
+  </script>
+
+</body>
+</html>
